@@ -1,8 +1,9 @@
 @extends('layouts.app')
 @section("title" , "posts")
 @section("content")
-<a href="{{ route("posts.create") }}">add new post</a>
-<div class="container">
+
+<div class="container mt-5">
+    <a href="{{ route("posts.create") }}" class="btn btn-secondary mb-3">add new post</a>
 @forelse ($posts as $post )
     <div class="crud">
         <img src="/images/posts/{{ $post ->image }}" alt="">
