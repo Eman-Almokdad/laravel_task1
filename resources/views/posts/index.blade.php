@@ -16,6 +16,7 @@
             @method('DELETE')
             <button type="submit" class="btn btn-danger">Delete</button>
         </form>
+        <a href="{{ $post->show }}">show</a>
     </div>
 @empty
     <h1>there isn't any posts</h1>

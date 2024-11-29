@@ -24,7 +24,7 @@
             <input type="file" name="image" id="image" class="form-control">
             @if ($post->image)
                 <p>Current Image:</p>
-                <img src="{{ asset('storage/posts/' . $post->image) }}" alt="{{ $post->title }}" style="max-width: 200px;">
+                <img src="{{ asset('images/posts/' . $post->image) }}" alt="{{ $post->title }}" style="max-width: 200px;">
             @endif
         </div>
 

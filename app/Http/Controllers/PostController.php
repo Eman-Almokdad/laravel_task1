@@ -46,7 +46,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return view("posts.show" , compact("post"));
     }
 
     /**
@@ -62,30 +62,20 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        $validated = $request->validate([
-            "title" => "required|string|max:255",
-            "description" => "required|string",
-            "image" => "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",
-        ]);
-    
         if ($request->hasFile("image")) {
-            
-            if ($post->image) {
-                Storage::delete("public/posts/" . $post->image);
-            }
-            
-            $imageName = $request->file("image")->store("posts", "public");
-            $post->image = $imageName;
+            $imageName =$request->file("image")->getClientOriginalName() . "-" . time() . $request->file("image")->getClientOriginalExtension();
+            $request->file("image")->move(public_path("/images/posts"),$imageName);
+        }else {
+            $imageName=$post->image;
         }
-    
         $post->update([
             "title" => $request->title,
             "description" => $request->description,
-            "image" => $post->image,
+            "image" => $imageName,
         ]);
-    
-        return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
-    
+
+        return redirect()->route('posts.index');
+
     }
 
     /**
@@ -96,7 +86,7 @@ class PostController extends Controller
         if ($post->image && file_exists(public_path('images/posts/' . $post->image))) {
             unlink(public_path('images/posts/' . $post->image));
         }
-        $post->delete(); 
+        $post->delete();
         return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
     }
 }
